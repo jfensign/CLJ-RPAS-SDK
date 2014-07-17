@@ -1,0 +1,1 @@
+rpas_cloud_sdk.core$get_rated_items@47217048
