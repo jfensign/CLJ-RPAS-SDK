@@ -70,26 +70,25 @@ Using credential based authentication and returning responses as JSON
 
 Listing resources
 
-  ;basic list
-  (rpas/get-rated-items)
-
-  ;with query parameters
-  (rpas/get-rated-items {:q "datapoint1:datapoint2value,datapoint2:datapoint2value"
-               :expand "*"
-               :offset 20
-               :rows 80})
+    ;basic list
+    (rpas/get-rated-items)
+    ----------------------
+    ;with query parameters
+    (rpas/get-rated-items {:q "datapoint1:datapoint2value,datapoint2:datapoint2value"
+                           :expand "*"
+                           :offset 20
+                           :rows 80})
 
 Selecting resources
 
-  ;basic select
-  (rpas/get-rated-items "RatedItemID")
-
-  ;with a querystring
-  (rpas/get-rated-items "RatedItemID" 
-    {:q "datapoint1:datapoint2value,datapoint2:datapoint2value"
-     :expand "*"
-     :offset 20
-       :rows 80})
+    ;basic select
+    (rpas/get-rated-items "RatedItemID")
+    ------------------------------------
+    ;with a querystring
+    (rpas/get-rated-items "RatedItemID" {:q "datapoint1:datapoint2value,datapoint2:datapoint2value"
+                                         :expand "*"
+                                         :offset 20
+                                         :rows 80})
 
 
 <h3>Example Web Application</h3>
