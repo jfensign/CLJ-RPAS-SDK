@@ -32,9 +32,9 @@
       (= :clojure format))
         (json/read-str (http-response :body) 
                        :keyword-fn keyword)
-    	(if (= :json format)
-      	  (http-response :body)
-      	  nil))))
+      (if (= :json format)
+          (http-response :body)
+          nil))))
 
 ;Should be expanded. alert *base-uri* with appropriate version path once domain is purchased
 (defn config
@@ -42,16 +42,16 @@
   (reset! global-options opts)
   (if 
     (@global-options :token)
-	(swap! rpas-request-headers conj {"x-its-rpas" (@global-options :token)
+  (swap! rpas-request-headers conj {"x-its-rpas" (@global-options :token)
                                       "x-rpas-api-version" (@global-options :api-version)})
- 	(if 
+  (if 
       (and 
         (@global-options :username) 
         (@global-options :password))
       (let [{:keys [username password]} @global-options
             request-token (((response (http/post 
-            	(clojure.string/join "/" [base-uri "authenticate"])
-            	{:basic-auth [username password]})) "Auth") "RequestToken")]
+              (clojure.string/join "/" [base-uri "authenticate"])
+              {:basic-auth [username password]})) "Auth") "RequestToken")]
         (swap! rpas-request-headers conj {"x-its-rpas" request-token
                                           "x-rpas-api-version" (@global-options :api-version)}))
       (throw (Exception. "Invalid RPAS Cloud Credentials")))))
@@ -97,77 +97,114 @@
    (response (http/get (-compose-request-uri :research-types) 
              {:headers @rpas-request-headers})))
   ([id]
-   (response (http/get (-compose-request-uri :research-types id)
-             {:headers @rpas-request-headers}))))
+   (if (string? id)
+     (response (http/get (-compose-request-uri :research-types id)
+             {:headers @rpas-request-headers}))
+     (response (http/get (-compose-request-uri :research-types)
+             {:headers @rpas-request-headers
+              :query-params (-set-query id)})))))
 
 (defn get-taxonomies
   ([]
    (response (http/get (-compose-request-uri :taxonomies) 
              {:headers @rpas-request-headers})))
   ([id]
-   (response (http/get (-compose-request-uri :taxonomies id)
-             {:headers @rpas-request-headers}))))
+   (if (string? id)
+     (response (http/get (-compose-request-uri :taxonomies id)
+             {:headers @rpas-request-headers}))
+     (response (http/get (-compose-request-uri :taxonomies)
+             {:headers @rpas-request-headers
+              :query-params (-set-query id)})))))
 
 (defn get-workflows
   ([]
    (response (http/get (-compose-request-uri :workflows)
              {:headers @rpas-request-headers})))
   ([id]
-   (response (http/get (-compose-request-uri :workflows id)
-             {:headers @rpas-request-headers}))))
+    (if (string? id)
+     (response (http/get (-compose-request-uri :workflows id)
+             {:headers @rpas-request-headers}))
+     (response (http/get (-compose-request-uri :workflows)
+             {:headers @rpas-request-headers
+              :query-params (-set-query id)})))))
 
 (defn get-lists
   ([]
    (response (http/get (-compose-request-uri :lists)
              {:headers @rpas-request-headers})))
   ([id]
-   (response (http/get (-compose-request-uri :lists id)
-             {:headers @rpas-request-headers}))))
+   (if (string? id)
+     (response (http/get (-compose-request-uri :lists id)
+             {:headers @rpas-request-headers}))
+     (response (http/get (-compose-request-uri :lists)
+             {:headers @rpas-request-headers
+              :query-params (-set-query id)})))))
 
 (defn get-products
   ([]
    (response (http/get (-compose-request-uri :products)
              {:headers @rpas-request-headers})))
   ([id]
-   (response (http/get (-compose-request-uri :products id) 
-             {:headers @rpas-request-headers}))))
+   (if (string? id)
+     (response (http/get (-compose-request-uri :products id)
+             {:headers @rpas-request-headers}))
+     (response (http/get (-compose-request-uri :products)
+             {:headers @rpas-request-headers
+              :query-params (-set-query id)})))))
 
 (defn get-users
   ([]
    (response (http/get (-compose-request-uri :users)
              {:headers @rpas-request-headers})))
   ([id]
-   (response (http/get (-compose-request-uri :users id)
-             {:headers @rpas-request-headers}))))
+   (if (string? id)
+     (response (http/get (-compose-request-uri :users id)
+             {:headers @rpas-request-headers}))
+     (response (http/get (-compose-request-uri :users)
+             {:headers @rpas-request-headers
+              :query-params (-set-query id)})))))
 
 (defn get-roles
   ([]
    (response (http/get (-compose-request-uri :roles)
              {:headers @rpas-request-headers})))
   ([id]
-   (response (http/get (-compose-request-uri :roles id)
-             {:headers @rpas-request-headers}))))
+   (if (string? id)
+     (response (http/get (-compose-request-uri :roles id)
+             {:headers @rpas-request-headers}))
+     (response (http/get (-compose-request-uri :roles)
+             {:headers @rpas-request-headers
+              :query-params (-set-query id)})))))
 
 (defn get-disclosures
   ([]
    (response (http/get (-compose-request-uri :disclosures)
              {:headers @rpas-request-headers})))
   ([id]
-   (response (http/get (-compose-request-uri :disclosures id)
-             {:headers @rpas-request-headers}))))
+   (if (string? id)
+     (response (http/get (-compose-request-uri :disclosures id)
+             {:headers @rpas-request-headers}))
+     (response (http/get (-compose-request-uri :disclosures)
+             {:headers @rpas-request-headers
+              :query-params (-set-query id)})))))
 
 (defn get-documents
   ([]
    (response (http/get (-compose-request-uri :documents) 
              {:headers @rpas-request-headers})))
   ([id]
-   (response (http/get (-compose-request-uri :documents id) 
-             {:headers @rpas-request-headers}))))
+   (if (string? id)
+     (response (http/get (-compose-request-uri :documents id)
+             {:headers @rpas-request-headers}))
+     (response (http/get (-compose-request-uri :documents)
+             {:headers @rpas-request-headers
+              :query-params (-set-query id)})))))
 
 (defn -main
   [& args]
-  (config {:token "cd8b548b6fb9e848ae8ca32a9ba919fa75c82ed3"
+  (comment "Quick test. Run \"lein run\"")
+  (config {:username ""
+           :password ""
            :api-version "v1"})
   (println @global-options)
-  (->> (get-disclosures)
-       (println)))
+  (->> (get-roles) (println)))
