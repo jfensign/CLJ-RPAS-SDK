@@ -41,16 +41,16 @@ With Gradle
     
 <h3>Usage</h3>
 
-First require it in your application
+<b>First require it in your application</b>
 
     (ns my-app.core
       (:require [rpas-cloud-sdk.core :as rpas]))
       
-Or the REPL
+<b>Or the REPL</b>
 
     (require '[rpas-cloud-sdk.core :as rpas]')
     
-Configure the SDK
+<b>Configure the SDK</b>
 
 Using simple token based authentication and returning responses as hash maps
 
@@ -65,6 +65,31 @@ Using credential based authentication and returning responses as JSON
             :password "RPAS Cloud password" 
                   :api-verson "v1"
                   :response-format :json})
+
+<b>Use the SDK to easily access RPAS resources</b>
+
+Listing resources
+
+  ;basic list
+  (rpas/get-rated-items)
+
+  ;with query parameters
+  (rpas/get-rated-items {:q "datapoint1:datapoint2value,datapoint2:datapoint2value"
+               :expand "*"
+               :offset 20
+               :rows 80})
+
+Selecting resources
+
+  ;basic select
+  (rpas/get-rated-items "RatedItemID")
+
+  ;with a querystring
+  (rpas/get-rated-items "RatedItemID" 
+    {:q "datapoint1:datapoint2value,datapoint2:datapoint2value"
+     :expand "*"
+     :offset 20
+       :rows 80})
 
 
 <h3>Example Web Application</h3>
