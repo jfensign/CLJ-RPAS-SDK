@@ -1,6 +1,6 @@
 # webapp
 
-FIXME
+Simple Web app allowing you to modify the URI and consequently return raw responses for all RPAS resources.
 
 ## Prerequisites
 
@@ -14,6 +14,7 @@ To start a web server for the application, run:
 
     lein ring server
 
-## License
+## Usage
 
-Copyright © 2014 FIXME
+	LIST: /sdk/:resource-name
+	SELECT /sdk/:resource-name/:resource-id
