@@ -69,31 +69,30 @@ Using credential based authentication and returning responses as JSON
 
 <h3>Example Web Application</h3>
 
-  ;include libraries
-  (ns app.handler
+    ;include libraries
+    (ns app.handler
       (:require [compojure.core :refer :all]
                 [compojure.handler :as handler]
                 [compojure.route :as route]
                 [ring.util.response :refer [resource-response response]]
                 [ring.middleware.json :as middleware]
                 [rpas-cloud-sdk.core :as rpas]))
-
     ;configure the SDK
-  (rpas/config {:username "RPAS USERNAME" 
+    (rpas/config {:username "RPAS USERNAME" 
                   :password "RPAS PASSWORD"
                   :response-format :clojure
                   :api-version "v1"})]
-
-    (comment
-     "take the resource parameter and call the appropriate function (i.e. get-taxonomies' resource is 'taxonomies'")
-  (defn -ref-sdk-method
+                  
+    (defn -ref-sdk-method
+      "take the resource parameter and call the appropriate function (i.e. the resource 'taxonomies' maps to get-taxonomies'"
       [resource]
       (let [fun (symbol (clojure.string/join "-" ["get" resource]))
             name-sp (symbol "rpas-cloud-sdk.core")
             call (ns-resolve name-sp fun)]
-      call))
-
-  (defroutes routes
+        call))
+        
+    ;define routes
+    (defroutes routes
     ;Returns listed resources
       (GET "/sdk/:api" {query :query-params {api :api} :params} 
         (response 
@@ -106,9 +105,9 @@ Using credential based authentication and returning responses as JSON
             (let [call (-ref-sdk-method api)]
               ;call rpas sdk function and supply as an argument
               (call id)))))
-    
+              
     ;initialize your app and define your middleware stack
-  (def app
+    (def app
       (-> (handler/api routes)
           (middleware/wrap-json-body)
           (middleware/wrap-json-response)))
