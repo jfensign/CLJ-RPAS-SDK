@@ -62,8 +62,53 @@ Using simple token based authentication and returning responses as hash maps
 Using credential based authentication and returning responses as JSON
 
     (rpas/config {:username "RPAS Cloud username"
-    			  :password "RPAS Cloud password" 
+            :password "RPAS Cloud password" 
                   :api-verson "v1"
                   :response-format :json})
 
-  
+
+<h3>Example Web Application</h3>
+
+  ;include libraries
+  (ns app.handler
+      (:require [compojure.core :refer :all]
+                [compojure.handler :as handler]
+                [compojure.route :as route]
+                [ring.util.response :refer [resource-response response]]
+                [ring.middleware.json :as middleware]
+                [rpas-cloud-sdk.core :as rpas]))
+
+    ;configure the SDK
+  (rpas/config {:username "RPAS USERNAME" 
+                  :password "RPAS PASSWORD"
+                  :response-format :clojure
+                  :api-version "v1"})]
+
+    (comment
+     "take the resource parameter and call the appropriate function (i.e. get-taxonomies' resource is 'taxonomies'")
+  (defn -ref-sdk-method
+      [resource]
+      (let [fun (symbol (clojure.string/join "-" ["get" resource]))
+            name-sp (symbol "rpas-cloud-sdk.core")
+            call (ns-resolve name-sp fun)]
+      call))
+
+  (defroutes routes
+    ;Returns listed resources
+      (GET "/sdk/:api" {query :query-params {api :api} :params} 
+        (response 
+            (let [call (-ref-sdk-method api)]
+              ;call rpas sdk function and apply query
+              (call query))))
+        ;Returns resources selected by ID
+      (GET "/sdk/:api/:id" {query :query-params {api :api id :id} :params} 
+        (response 
+            (let [call (-ref-sdk-method api)]
+              ;call rpas sdk function and supply as an argument
+              (call id)))))
+    
+    ;initialize your app and define your middleware stack
+  (def app
+      (-> (handler/api routes)
+          (middleware/wrap-json-body)
+          (middleware/wrap-json-response)))
