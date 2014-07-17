@@ -81,7 +81,7 @@ Using credential based authentication and returning responses as JSON
     (rpas/config {:username "RPAS USERNAME" 
                   :password "RPAS PASSWORD"
                   :response-format :clojure
-                  :api-version "v1"})]
+                  :api-version "v1"})
                   
     (defn -ref-sdk-method
       "take the resource parameter and call the appropriate function (i.e. the resource 'taxonomies' maps to get-taxonomies'"
@@ -92,7 +92,7 @@ Using credential based authentication and returning responses as JSON
         call))
         
     ;define routes
-    (defroutes routes
+    (defroutes app-routes
     ;Returns listed resources
       (GET "/sdk/:api" {query :query-params {api :api} :params} 
         (response 
@@ -108,6 +108,6 @@ Using credential based authentication and returning responses as JSON
               
     ;initialize your app and define your middleware stack
     (def app
-      (-> (handler/api routes)
+      (-> (handler/api app-routes)
           (middleware/wrap-json-body)
           (middleware/wrap-json-response)))
