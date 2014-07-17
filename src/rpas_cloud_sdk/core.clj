@@ -90,7 +90,11 @@
      
        (http/get (-compose-request-uri :rated-items) 
                  {:headers @rpas-request-headers
-                  :query-params (-set-query query)})))))
+                  :query-params (-set-query query)}))))
+  ([id query]
+   (response (http/get (-compose-request-uri :rated-items id)
+             {:headers @rpas-request-headers
+              :query-params (-set-query query)}))))
 
 (defn get-research-types
   ([]
@@ -102,7 +106,11 @@
              {:headers @rpas-request-headers}))
      (response (http/get (-compose-request-uri :research-types)
              {:headers @rpas-request-headers
-              :query-params (-set-query id)})))))
+              :query-params (-set-query id)}))))
+  ([id query]
+   (response (http/get (-compose-request-uri :research-types id)
+             {:headers @rpas-request-headers
+              :query-params (-set-query query)}))))
 
 (defn get-taxonomies
   ([]
@@ -114,7 +122,11 @@
              {:headers @rpas-request-headers}))
      (response (http/get (-compose-request-uri :taxonomies)
              {:headers @rpas-request-headers
-              :query-params (-set-query id)})))))
+              :query-params (-set-query id)}))))
+  ([id query]
+   (response (http/get (-compose-request-uri :taxonomies id)
+             {:headers @rpas-request-headers
+              :query-params (-set-query query)}))))
 
 (defn get-workflows
   ([]
@@ -126,7 +138,11 @@
              {:headers @rpas-request-headers}))
      (response (http/get (-compose-request-uri :workflows)
              {:headers @rpas-request-headers
-              :query-params (-set-query id)})))))
+              :query-params (-set-query id)}))))
+  ([id query]
+   (response (http/get (-compose-request-uri :workflows id)
+             {:headers @rpas-request-headers
+              :query-params (-set-query query)}))))
 
 (defn get-lists
   ([]
@@ -138,7 +154,11 @@
              {:headers @rpas-request-headers}))
      (response (http/get (-compose-request-uri :lists)
              {:headers @rpas-request-headers
-              :query-params (-set-query id)})))))
+              :query-params (-set-query id)}))))
+  ([id query]
+   (response (http/get (-compose-request-uri :lists id)
+             {:headers @rpas-request-headers
+              :query-params (-set-query query)}))))
 
 (defn get-products
   ([]
@@ -150,7 +170,11 @@
              {:headers @rpas-request-headers}))
      (response (http/get (-compose-request-uri :products)
              {:headers @rpas-request-headers
-              :query-params (-set-query id)})))))
+              :query-params (-set-query id)}))))
+  ([id query]
+   (response (http/get (-compose-request-uri :products id)
+             {:headers @rpas-request-headers
+              :query-params (-set-query query)}))))
 
 (defn get-users
   ([]
@@ -162,7 +186,11 @@
              {:headers @rpas-request-headers}))
      (response (http/get (-compose-request-uri :users)
              {:headers @rpas-request-headers
-              :query-params (-set-query id)})))))
+              :query-params (-set-query id)}))))
+  ([id query]
+   (response (http/get (-compose-request-uri :users id)
+             {:headers @rpas-request-headers
+              :query-params (-set-query query)}))))
 
 (defn get-roles
   ([]
@@ -174,7 +202,11 @@
              {:headers @rpas-request-headers}))
      (response (http/get (-compose-request-uri :roles)
              {:headers @rpas-request-headers
-              :query-params (-set-query id)})))))
+              :query-params (-set-query id)}))))
+  ([id query]
+   (response (http/get (-compose-request-uri :roles id)
+             {:headers @rpas-request-headers
+              :query-params (-set-query query)}))))
 
 (defn get-disclosures
   ([]
@@ -186,7 +218,11 @@
              {:headers @rpas-request-headers}))
      (response (http/get (-compose-request-uri :disclosures)
              {:headers @rpas-request-headers
-              :query-params (-set-query id)})))))
+              :query-params (-set-query id)}))))
+  ([id query]
+   (response (http/get (-compose-request-uri :disclosures id)
+             {:headers @rpas-request-headers
+              :query-params (-set-query query)}))))
 
 (defn get-documents
   ([]
@@ -198,13 +234,17 @@
              {:headers @rpas-request-headers}))
      (response (http/get (-compose-request-uri :documents)
              {:headers @rpas-request-headers
-              :query-params (-set-query id)})))))
+              :query-params (-set-query id)}))))
+  ([id query]
+   (response (http/get (-compose-request-uri :documents id)
+             {:headers @rpas-request-headers
+              :query-params (-set-query query)}))))
 
 (defn -main
   [& args]
   (comment "Quick test. Run \"lein run\"")
-  (config {:username ""
-           :password ""
+  (config {:username "client_100_admin"
+           :password "13705754"
            :api-version "v1"})
   (println @global-options)
-  (->> (get-roles) (println)))
+  (->> (get-rated-items "537b62e6edff55ab0f9dd7c6" {:q "something:else"}) (println)))
