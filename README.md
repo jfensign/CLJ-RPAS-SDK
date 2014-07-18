@@ -138,7 +138,7 @@ Selecting resources
   (GET "/sdk/:api/:id" {query :query-params {api :api id :id} :params} 
     (response 
       (let [call (-ref-sdk-method api)]
-        ;call rpas sdk function and supply as an argument
+        ;call rpas sdk function and supply id as an argument
         (call id)))))
               
 ;initialize your app and define your middleware stack
